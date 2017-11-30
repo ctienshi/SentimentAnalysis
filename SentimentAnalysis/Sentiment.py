@@ -117,10 +117,9 @@ def calEmotionalLevel(email):
         emotionalLevel = 0
     elif Slvl < -1.5:
         emotionalLevel = -2
-    elif Slvl < -0.11 and Slvl > -1.5:
+    elif Slvl <= -0.45 and Slvl > -1.5:
         emotionalLevel = -1
 
-    print("the slvl is: " + str(Slvl))
     print("The Average Sentiment Level is: " + str(emotionalLevel))
     return emotionalLevel
 
