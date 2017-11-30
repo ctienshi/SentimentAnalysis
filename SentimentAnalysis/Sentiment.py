@@ -111,9 +111,9 @@ def calEmotionalLevel(email):
 
     if Slvl > 1.5:
         emotionalLevel = 2
-    elif Slvl > 0.11 and Slvl < 1.5:
+    elif Slvl > 0.5 and Slvl < 1.5:
         emotionalLevel = 1
-    elif Slvl > -0.46 and Slvl < 0.45:
+    elif Slvl > -0.45 and Slvl < 0.49:
         emotionalLevel = 0
     elif Slvl < -1.5:
         emotionalLevel = -2
