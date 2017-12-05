@@ -10,7 +10,7 @@ test = str(first_column[4].value)
 
 word = "You received this message because"
 
-for i in range(50,70):
+for i in range(70,90):
     a = str(first_column[i].value)
     a = a[:a.find(word)]
     #print (a)

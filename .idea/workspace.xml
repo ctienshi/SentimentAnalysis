@@ -13,11 +13,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Sentiment.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Sentiment.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Sentiment.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1854">
-              <caret line="103" column="22" lean-forward="true" selection-start-line="103" selection-start-column="22" selection-end-line="103" selection-end-column="22" />
+              <caret line="103" column="22" lean-forward="false" selection-start-line="103" selection-start-column="22" selection-end-line="103" selection-end-column="22" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -25,11 +25,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="extract.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="extract.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/extract.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="19" column="14" lean-forward="true" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
+            <state relative-caret-position="216">
+              <caret line="12" column="20" lean-forward="false" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -50,7 +50,7 @@
       <file leaf-file-name="negativewords.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/negativewords.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
+            <state relative-caret-position="0">
               <caret line="0" column="1155" lean-forward="false" selection-start-line="0" selection-start-column="1152" selection-end-line="0" selection-end-column="1155" />
               <folding />
             </state>
@@ -60,8 +60,8 @@
       <file leaf-file-name="afinn.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/afinn.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-6696">
-              <caret line="0" column="10" lean-forward="false" selection-start-line="0" selection-start-column="10" selection-end-line="0" selection-end-column="10" />
+            <state relative-caret-position="-5562">
+              <caret line="423" column="14" lean-forward="true" selection-start-line="423" selection-start-column="14" selection-end-line="423" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -390,9 +390,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/extract.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="20" lean-forward="false" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/negativewords.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
+        <state relative-caret-position="0">
           <caret line="0" column="1155" lean-forward="false" selection-start-line="0" selection-start-column="1152" selection-end-line="0" selection-end-column="1155" />
           <folding />
         </state>
@@ -400,8 +410,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/afinn.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6696">
-          <caret line="0" column="10" lean-forward="false" selection-start-line="0" selection-start-column="10" selection-end-line="0" selection-end-column="10" />
+        <state relative-caret-position="-5562">
+          <caret line="423" column="14" lean-forward="true" selection-start-line="423" selection-start-column="14" selection-end-line="423" selection-end-column="14" />
           <folding />
         </state>
       </provider>
@@ -409,19 +419,9 @@
     <entry file="file://$PROJECT_DIR$/Sentiment.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1854">
-          <caret line="103" column="22" lean-forward="true" selection-start-line="103" selection-start-column="22" selection-end-line="103" selection-end-column="22" />
+          <caret line="103" column="22" lean-forward="false" selection-start-line="103" selection-start-column="22" selection-end-line="103" selection-end-column="22" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/extract.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="19" column="14" lean-forward="true" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
           </folding>
         </state>
       </provider>
