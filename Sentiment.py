@@ -120,12 +120,12 @@ def calEmotionalLevel(email):
     elif Slvl <= -3:
         emotionalLevel = -2
 
-    print ("afinn "+ str(sentiAF))
-    print ("bow "+ str(sentiBOW))
-    print ("NLP "+ str(sentiSNLP))
-    print ("the slvl is: " + str(Slvl))
-    print ("The Average Sentiment Level is: " + str(emotionalLevel))
-    print ('\n')
+    #print ("afinn "+ str(sentiAF))
+    #print ("bow "+ str(sentiBOW))
+    #print ("NLP "+ str(sentiSNLP))
+    #print ("the slvl is: " + str(Slvl))
+    #print ("The Average Sentiment Level is: " + str(emotionalLevel))
+    #print ('\n')
     return emotionalLevel
 
 
@@ -135,9 +135,4 @@ def tes(email):
     sentiSNLP = stanfordNLP(email)
     Slvl = 0.45* (sentiAF+sentiBOW)/2 + 0.55 * sentiSNLP
     return  Slvl
-
-
-#e = "Samisa...Samisa Abeysinghe Chief Engineering and Delivery Officer WSO2 Inc. http://wso2.com On Fri, Nov 24, 2017 at 9:15 AM, Prabath Siriwardena <prabath@wso2.com> wrote:"
-#print (e)
-#calEmotionalLevel(e)
 
