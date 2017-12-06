@@ -5,10 +5,14 @@
       <configuration sdkName="" />
     </facet>
   </component>
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
-    <exclude-output />
-    <content url="file://$MODULE_DIR$" />
-    <orderEntry type="inheritedJdk" />
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/venv1" />
+    </content>
+    <orderEntry type="jdk" jdkName="Python 2.7 (SentimentAnalysis)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="R User Library" level="project" />
+    <orderEntry type="library" name="R Skeletons" level="application" />
   </component>
 </module>
