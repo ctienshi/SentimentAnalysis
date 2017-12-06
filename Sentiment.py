@@ -106,25 +106,26 @@ def calEmotionalLevel(email):
     sentiBOW = bagofwords(email)
     sentiSNLP = stanfordNLP(email)
 
+    Slvl = sentiAF + sentiBOW + sentiSNLP
+    #Slvl = 0.45* (sentiAF+sentiBOW)/2 + 0.55 * sentiSNLP
 
-    Slvl = 0.45* (sentiAF+sentiBOW)/2 + 0.55 * sentiSNLP
-
-    if Slvl > 1.5:
+    if Slvl >= 3:
         emotionalLevel = 2
-    elif Slvl > 0.39 and Slvl < 1.5:
+    elif Slvl >= 1.5 and Slvl < 3:
         emotionalLevel = 1
-    elif Slvl > -0.56 and Slvl < 0.49:
+    elif Slvl >= -1.5 and Slvl < 1.5:
         emotionalLevel = 0
-    elif Slvl < -1.5:
-        emotionalLevel = -2
-    elif Slvl < -0.56 and Slvl > -1.5:
+    elif Slvl <= -1.5 and Slvl > -3:
         emotionalLevel = -1
+    elif Slvl <= -3:
+        emotionalLevel = -2
 
-    #print ("afinn "+ str(sentiAF))
-    #print ("bow "+ str(sentiBOW))
-    #print ("NLP "+ str(sentiSNLP))
-    #print ("the slvl is: " + str(Slvl))
-    #print ("The Average Sentiment Level is: " + str(emotionalLevel))
+    print ("afinn "+ str(sentiAF))
+    print ("bow "+ str(sentiBOW))
+    print ("NLP "+ str(sentiSNLP))
+    print ("the slvl is: " + str(Slvl))
+    print ("The Average Sentiment Level is: " + str(emotionalLevel))
+    print ('\n')
     return emotionalLevel
 
 
