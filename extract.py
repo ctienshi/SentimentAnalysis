@@ -2,16 +2,16 @@
 from Sentiment import calEmotionalLevel
 from Sentiment import tes
 from openpyxl import load_workbook
-wb=load_workbook("/home/ching/Downloads/shankar.xlsx")
+wb=load_workbook("/home/ching/Downloads/dataset.xlsx")
 
 ws = wb.active
 first_column = ws['E']
-col = ws['L']
+col = ws['C']
 test = str(first_column[4].value)
 
 word = "You received this message because"
 
-for i in range(282,293):
+for i in range(90,100):
     a = str(first_column[i].value)
     a = a[:a.find(word)]
     #print (a)
@@ -19,8 +19,8 @@ for i in range(282,293):
 
     x = calEmotionalLevel(a)
     p = tes(a)
-    column_cell = 'L'
-    cell = 'M'
+    column_cell = 'C'
+    cell = 'B'
     ws[column_cell+str(i+1)] = x
     ws[cell+str(i+1)] = p
 
@@ -28,5 +28,5 @@ for i in range(282,293):
     print ("\n")
 
 
-wb.save("/home/ching/Downloads/shankar.xlsx")
+wb.save("/home/ching/Downloads/dataset.xlsx")
 
