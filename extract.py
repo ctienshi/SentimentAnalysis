@@ -11,11 +11,9 @@ test = str(first_column[4].value)
 
 word = "You received this message because"
 
-for i in range(90,100):
+for i in range(len(first_column)):
     a = str(first_column[i].value)
     a = a[:a.find(word)]
-    #print (a)
-    #print ('\n')
 
     x = calEmotionalLevel(a)
     p = tes(a)

@@ -133,6 +133,6 @@ def tes(email):
     sentiAF = sentimentAfinn(email)
     sentiBOW = bagofwords(email)
     sentiSNLP = stanfordNLP(email)
-    Slvl = 0.45* (sentiAF+sentiBOW)/2 + 0.55 * sentiSNLP
+    Slvl = sentiAF + sentiBOW + sentiSNLP
     return  Slvl
 
