@@ -101,7 +101,7 @@ def bagofwords(email):
 #------------------------------------------------------------------------------------------
 
 def calEmotionalLevel(email):
-    emotionalLevel = 0
+    emotionalLevel = ""
     sentiAF = sentimentAfinn(email)
     sentiBOW = bagofwords(email)
     sentiSNLP = stanfordNLP(email)
@@ -110,16 +110,17 @@ def calEmotionalLevel(email):
     #Slvl = 0.45* (sentiAF+sentiBOW)/2 + 0.55 * sentiSNLP
 
     if Slvl >= 3:
-        emotionalLevel = 2
+        emotionalLevel = "very positive"
     elif Slvl >= 1.5 and Slvl < 3:
-        emotionalLevel = 1
+        emotionalLevel = "positive"
     elif Slvl >= -1.5 and Slvl < 1.5:
-        emotionalLevel = 0
+        emotionalLevel = "neutral"
     elif Slvl <= -1.5 and Slvl > -3:
-        emotionalLevel = -1
+        emotionalLevel = "negative"
     elif Slvl <= -3:
-        emotionalLevel = -2
+        emotionalLevel = "very negative"
 
+    #print (email)
     #print ("afinn "+ str(sentiAF))
     #print ("bow "+ str(sentiBOW))
     #print ("NLP "+ str(sentiSNLP))

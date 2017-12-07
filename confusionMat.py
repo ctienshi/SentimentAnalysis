@@ -3,7 +3,7 @@ from pandas_ml import ConfusionMatrix
 import matplotlib.pyplot as plt
 from openpyxl import load_workbook
 
-wb=load_workbook("/home/ching/Downloads/dataset.xlsx")
+wb=load_workbook("/home/ching/WORK/SentimentAnalysis/testData/dataset.xlsx")
 ws = wb.active
 actual = ws['A']
 pred = ws['B']
@@ -34,4 +34,4 @@ def perf_measure(y_actual, y_hat):
 
 print ("\n")
 a = perf_measure(act_arr,pred_arr)
-print("The Accuray is: "+str(a*100)+"%")
+print("The Accuracy is: "+str(a*100)+"%")
