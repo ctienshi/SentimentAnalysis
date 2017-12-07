@@ -107,7 +107,6 @@ def calEmotionalLevel(email):
     sentiSNLP = stanfordNLP(email)
 
     Slvl = sentiAF + sentiBOW + sentiSNLP
-    #Slvl = 0.45* (sentiAF+sentiBOW)/2 + 0.55 * sentiSNLP
 
     if Slvl >= 3:
         emotionalLevel = "very positive"
