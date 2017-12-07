@@ -10,7 +10,7 @@ pred = ws['B']
 act_arr = []
 pred_arr = []
 
-for i in range(100):
+for i in range(len(actual)):
     act_arr.append(actual[i].value)
     pred_arr.append(pred[i].value)
 
