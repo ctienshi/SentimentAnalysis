@@ -9,13 +9,13 @@ actual = ws['A']
 pred = ws['B']
 act_arr = []
 pred_arr = []
-print  (actual[3].value)
+
 for i in range(100):
     act_arr.append(actual[i].value)
     pred_arr.append(pred[i].value)
-#y_true = [2, 1, 0, 0, -2, -1, 2, 2, 1, -2, -2, -1]
-#y_pred = [1, 1, 0, 1, -2, 1, 2, 2, 1, 2, 2, 1]
+
 confusion_matrix = ConfusionMatrix(act_arr, pred_arr)
+
 print("Confusion matrix:\n%s" % confusion_matrix)
 confusion_matrix.plot()
 plt.show()
