@@ -101,30 +101,31 @@ def bagofwords(email):
 #------------------------------------------------------------------------------------------
 
 def calEmotionalLevel(email):
-    emotionalLevel = 0
+    emotionalLevel = ""
     sentiAF = sentimentAfinn(email)
     sentiBOW = bagofwords(email)
     sentiSNLP = stanfordNLP(email)
 
+    Slvl = sentiAF + sentiBOW + sentiSNLP
 
-    Slvl = 0.45* (sentiAF+sentiBOW)/2 + 0.55 * sentiSNLP
+    if Slvl >= 3:
+        emotionalLevel = "very positive"
+    elif Slvl >= 1.5 and Slvl < 3:
+        emotionalLevel = "positive"
+    elif Slvl >= -1.5 and Slvl < 1.5:
+        emotionalLevel = "neutral"
+    elif Slvl <= -1.5 and Slvl > -3:
+        emotionalLevel = "negative"
+    elif Slvl <= -3:
+        emotionalLevel = "very negative"
 
-    if Slvl > 1.5:
-        emotionalLevel = 2
-    elif Slvl > 0.39 and Slvl < 1.5:
-        emotionalLevel = 1
-    elif Slvl > -0.56 and Slvl < 0.49:
-        emotionalLevel = 0
-    elif Slvl < -1.5:
-        emotionalLevel = -2
-    elif Slvl < -0.56 and Slvl > -1.5:
-        emotionalLevel = -1
-
+    #print (email)
     #print ("afinn "+ str(sentiAF))
     #print ("bow "+ str(sentiBOW))
     #print ("NLP "+ str(sentiSNLP))
     #print ("the slvl is: " + str(Slvl))
     #print ("The Average Sentiment Level is: " + str(emotionalLevel))
+    #print ('\n')
     return emotionalLevel
 
 
@@ -132,11 +133,6 @@ def tes(email):
     sentiAF = sentimentAfinn(email)
     sentiBOW = bagofwords(email)
     sentiSNLP = stanfordNLP(email)
-    Slvl = 0.45* (sentiAF+sentiBOW)/2 + 0.55 * sentiSNLP
+    Slvl = sentiAF + sentiBOW + sentiSNLP
     return  Slvl
-
-
-#e = "Samisa...Samisa Abeysinghe Chief Engineering and Delivery Officer WSO2 Inc. http://wso2.com On Fri, Nov 24, 2017 at 9:15 AM, Prabath Siriwardena <prabath@wso2.com> wrote:"
-#print (e)
-#calEmotionalLevel(e)
 

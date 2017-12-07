@@ -1,6 +1,6 @@
 abandon	-2
 abandoned	-2
-abandons   	-2
+abandons	-2
 abducted	-2
 abduction	-2
 abductions	-2
