@@ -6,10 +6,12 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 #Afinn method--------------------------------------------------------------------------
+try:
+    afinnText = open('afinn.txt')
+except IOError as e:
+    print "I/O error({0}): {1}".format(e.errno, e.strerror)
 
-filenameAFINN = 'afinn.txt'
-afinn = dict(map(lambda (w, s): (w, int(s)), [
-ws.strip().split('\t') for ws in open(filenameAFINN) ]))
+afinn = dict(map(lambda (w, s): (w, int(s)), [ws.strip().split('\t') for ws in afinnText ]))
 pattern_split = re.compile(r"\W+")
 
 def sentimentAfinn(text):
@@ -84,7 +86,6 @@ def bagofwords(email):
 
         if x in open('negativewords.txt').read():
             count = count - 1
-            #print (word)
 
     if count <= -20:
         sentiBOW = -2
@@ -135,4 +136,3 @@ def tes(email):
     sentiSNLP = stanfordNLP(email)
     Slvl = sentiAF + sentiBOW + sentiSNLP
     return  Slvl
-

@@ -5,16 +5,15 @@ from openpyxl import load_workbook
 wb=load_workbook("/home/ching/WORK/SentimentAnalysis/testData/dataset.xlsx")
 
 ws = wb.active
-first_column = ws['E']
+first_column = ws['D']
 col = ws['B']
-test = str(first_column[4].value)
+#test = str(first_column[3].value)
 
 word = "You received this message because"
 
-for i in range(90,len(first_column)):
+for i in range(len(first_column)):
     a = str(first_column[i].value)
     a = a[:a.find(word)]
-
     x = calEmotionalLevel(a)
     p = tes(a)
     column_cell = 'B'
@@ -26,5 +25,5 @@ for i in range(90,len(first_column)):
     print ("\n")
 
 
-wb.save("/home/ching/WORK/SentimentAnalysis/testData/dataset.xlsx")
+#wb.save("/home/ching/WORK/SentimentAnalysis/testData/dataset.xlsx")
 
