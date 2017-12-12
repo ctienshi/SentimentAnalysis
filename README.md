@@ -37,4 +37,15 @@ Next the labels should be manually created in the Gmail.
 When creating these labels, each label is automatically assigned with a label ID.
 This label ID should me manually gathered and edited in the code in order for the emails to be labeled accordingly.
 
-gmailAPI.py would call the funtion calemotionalLevel() in the sentiment.py and return an emotional level to a particular email.
+By the following piece of code, the label IDs can be obtained.
+results = GMAIL.users().labels().list(userId='me').execute()
+labels = results.get('labels', [])
+
+if not labels:
+    print('No labels found.')
+else:
+	r label in print('Labels:')
+	for label in labels:
+    	print(label['name']+ " "+label['id'])
+
+While running the gmailAPI.py, it would call the funtion calemotionalLevel() in the sentiment.py and return an emotional level to a particular email.
