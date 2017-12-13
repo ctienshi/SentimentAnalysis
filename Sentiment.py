@@ -4,9 +4,10 @@ import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
+#from test import  authenticate
 
 #Afinn method--------------------------------------------------------------------------
-
+#authenticate()
 afinnText = open('afinn.txt')
 afinn = dict(map(lambda (w, s): (w, int(s)), [ws.strip().split('\t') for ws in afinnText ]))
 pattern_split = re.compile(r"\W+")
@@ -46,7 +47,7 @@ def stanfordNLP(data):
 
     nlp = StanfordCoreNLP('http://localhost:9000')
     res = nlp.annotate(data,properties={'annotators': 'sentiment','outputFormat':'json','timeout': 100000})
-
+    #print (res)
     for i in res["sentences"]:
         val = int(i["sentimentValue"])
         if i["sentiment"] == "Verypositive":
@@ -100,6 +101,7 @@ def bagofwords(email):
 
 def calEmotionalLevel(email):
     emotionalLevel = ""
+    tmp = 0
     sentiAF = sentimentAfinn(email)
     sentiBOW = bagofwords(email)
     sentiSNLP = stanfordNLP(email)
@@ -108,24 +110,29 @@ def calEmotionalLevel(email):
 
     if Slvl >= 3:
         emotionalLevel = "very positive"
+        tmp = 2
     elif Slvl >= 1.5 and Slvl < 3:
         emotionalLevel = "positive"
+        tmp = 1
     elif Slvl >= -1.5 and Slvl < 1.5:
         emotionalLevel = "neutral"
+        tmp = 0
     elif Slvl <= -1.5 and Slvl > -3:
         emotionalLevel = "negative"
+        tmp = -1
     elif Slvl <= -3:
         emotionalLevel = "very negative"
+        tmp = -2
 
     #print (email)
     #print ("afinn "+ str(sentiAF))
     #print ("bow "+ str(sentiBOW))
     #print ("NLP "+ str(sentiSNLP))
-    #print ("the slvl is: " + str(Slvl))
+    print ("the slvl is: " + str(Slvl))
     #print ("The Average Sentiment Level is: " + str(emotionalLevel))
     #print ('\n')
-    return emotionalLevel
-
+    #return emotionalLevel
+    return tmp
 
 def tes(email):
     sentiAF = sentimentAfinn(email)
@@ -133,4 +140,3 @@ def tes(email):
     sentiSNLP = stanfordNLP(email)
     Slvl = sentiAF + sentiBOW + sentiSNLP
     return  Slvl
-

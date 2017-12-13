@@ -30,6 +30,7 @@ from extractImportant import find_between
 SCOPES = 'https://www.googleapis.com/auth/gmail.modify' # we are using modify and not readonly, as we will be marking the messages Read
 store = file.Storage('storage.json')
 creds = store.get()
+
 if not creds or creds.invalid:
     flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
     creds = tools.run_flow(flow, store)
@@ -63,9 +64,12 @@ for i in range(len(r)):
 print (threadids)
 
 
-#thread = GMAIL.users().threads().get(userId='me', id='15fb6cd363972583').execute()
-#messages = thread['messages']
-#numOfmessages = len(messages) #number of messages in a thread
+thread = GMAIL.users().threads().get(userId='me', id=str(threadids[0])).execute()
+messages = thread['messages']
+numOfmessages = len(messages) #number of messages in a thread
+print ("number of messages")
+print (numOfmessages)
+
 
 #Getting the emails in a particular thread
 #mailsInThread = read_mails_in_thread(GMAIL,'15fb6cd363972583')

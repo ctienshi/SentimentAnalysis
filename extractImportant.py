@@ -185,6 +185,12 @@ def read_mails_in_thread(gmail,thread):
         #mail_data["attachment_count"] = word_count
         data.append(mail_data)
     processed_thread["mail-list"] = data
+    print ("THE NUMBERSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
+    print (vpos)
+    print (pos)
+    print (neu)
+    print (neg)
+    print (vneg)
 
     return processed_thread
 
