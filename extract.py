@@ -2,8 +2,8 @@
 from Sentiment import calEmotionalLevel
 from Sentiment import tes
 from openpyxl import load_workbook
-wb=load_workbook("/home/ching/WORK/SentimentAnalysis/testData/dataset.xlsx")
 
+wb=load_workbook("/home/ching/WORK/SentimentAnalysis/testData/dataset.xlsx")
 ws = wb.active
 first_column = ws['D']
 col = ws['B']

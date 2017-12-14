@@ -29,8 +29,7 @@ def perf_measure(y_actual, y_hat):
             cor += 1
         else:
             wro += 1
-    a = cor/(cor+wro)
-    return(a)
+    return(cor/(cor+wro))
 
 print ("\n")
 a = perf_measure(act_arr,pred_arr)
