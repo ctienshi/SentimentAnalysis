@@ -26,14 +26,4 @@ for i in range(len(r)):
 print (threadids)
 print (len(threadids))
 
-#getting threads for a specific threadID
-#thread = GMAIL.users().threads().get(userId='me', id=str(threadids[0])).execute()
-#messages = thread['messages']
-#numOfmessages = len(messages) #number of messages in a thread
-#print ("number of messages")
-#print (numOfmessages)
-
-
-#Getting the emails in a particular thread
-#tmp = get_mail_threads(GMAIL,['160472d6820f2602','160450222924fb36'])
-tmp = get_mail_threads(GMAIL,threadids)
+get_mail_threads(GMAIL,threadids)

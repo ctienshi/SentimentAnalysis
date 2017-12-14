@@ -124,14 +124,6 @@ def calEmotionalLevel(email):
         emotionalLevel = "very negative"
         tmp = -2
 
-    #print (email)
-    #print ("afinn "+ str(sentiAF))
-    #print ("bow "+ str(sentiBOW))
-    #print ("NLP "+ str(sentiSNLP))
-    print ("the slvl is: " + str(Slvl))
-    #print ("The Average Sentiment Level is: " + str(emotionalLevel))
-    #print ('\n')
-    #return emotionalLevel
     return tmp
 
 def tes(email):

@@ -6,25 +6,12 @@ Also, client_secret.json should be saved in the same directory as this file
 
 # Importing required libraries
 from apiclient import discovery
-from apiclient import errors
 from httplib2 import Http
 from oauth2client import file, client, tools
-import base64
 from bs4 import BeautifulSoup
-import re
-import time
-import dateutil.parser as parser
-from datetime import datetime
-import datetime
-import csv
 from Sentiment import calEmotionalLevel
-from extractImportant import ListThreadsMatchingQuery
-from extractImportant import ListThreadsWithLabels
-from extractImportant import get_mail_threads
-from extractImportant import read_mails_in_thread
-from extractImportant import find_between
-
-
+import dateutil.parser as parser
+import base64
 
 # Creating a storage.JSON file with authentication details
 SCOPES = 'https://www.googleapis.com/auth/gmail.modify' # we are using modify and not readonly, as we will be marking the messages Read
@@ -41,21 +28,10 @@ label_id_one = 'INBOX'
 label_id_two = 'UNREAD'
 
 # Getting all the unread messages from Inbox
-# labelIds can be changed accordingly
-
-#unread_msgs = GMAIL.users().messages().list(userId='me',labelIds=[label_id_one, label_id_two]).execute()
-#print (vpos)
 
 # We get a dictonary. Now reading values for the key 'messages'
 vpos = GMAIL.users().messages().list(userId='me',labelIds='Label_63').execute()
 mssg_list = vpos['messages']
-
-#print ("Total unread messages in inbox: ", str(len(mssg_list)))
-#---------------------------------------------------------------------------------------------------------------------
-#r = GMAIL.users().threads().list(userId='me', q='label:Label_74').execute()
-
-
-#---------------------------------------------------------------------------------------------------------------------
 
 final_list = [ ]
 count = 0
@@ -132,8 +108,6 @@ for mssg in mssg_list:
         lbl = 'Label_74'
     elif elevel == -2: #very negative
         lbl = 'Label_73'
-    #print(email)
-    #print(elevel)
 
     # Updating the label according to the emotional level
     GMAIL.users().messages().modify(userId=user_id, id=m_id,body={ 'addLabelIds': ['UNREAD', lbl]}).execute()
@@ -144,6 +118,7 @@ for mssg in mssg_list:
 
 print ("Total messaged retrived: ", str(len(final_list)))
 
+#The code to get the relevant label IDs
 '''
 results = GMAIL.users().labels().list(userId='me').execute()
 labels = results.get('labels', [])
@@ -154,7 +129,8 @@ else:
   print('Labels:')
   for label in labels:
     print(label['name']+ " "+label['id'])
-
+'''
+'''
 #Negative Label_74
 #VeryPositive Label_77
 #Neutral Label_75

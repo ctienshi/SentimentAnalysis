@@ -60,8 +60,6 @@ def get_mime_mail(service,mail_id):
         message = service.users().messages().get(userId='me', id=mail_id,
                                                  format='raw').execute()
 
-        # print ('Message snippet:'+  str(message['snippet']))
-
         msg_str = base64.urlsafe_b64decode(message['raw'].encode('ASCII'))
 
         mime_msg = email.message_from_string(msg_str)
@@ -178,21 +176,18 @@ def read_mails_in_thread(gmail,thread):
             neg = neg + 1
         elif emotionalLevel == -2:
             vneg = vneg + 1
-        #word_count = get_mail_body_word_count(processed_body)
         mail_data["id"] = mail
         mail_data["subject"] = subject
         mail_data["body"] = processed_body
-        #mail_data["attachment_count"] = word_count
         data.append(mail_data)
     processed_thread["mail-list"] = data
-    print ("THE NUMBERSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
     emotionalList.append(subject)
     emotionalList.append(vpos)
     emotionalList.append(pos)
     emotionalList.append(neu)
     emotionalList.append(neg)
     emotionalList.append(vneg)
-    #print (emotionalList)
+
     return emotionalList
 
 def get_mail_threads(gmail,threadId_list):
@@ -206,7 +201,6 @@ def get_mail_threads(gmail,threadId_list):
     '''
     wb=load_workbook("/home/ching/WORK/SentimentAnalysis/club.xlsx")
     ws = wb.active
-    first_column = ws['B']
 
     threads = []
     count = 120
@@ -228,12 +222,9 @@ def get_mail_threads(gmail,threadId_list):
         ws[neg+str(1+count)] = str(processed_thread[4])
         ws[vneg+str(1+count)] = str(processed_thread[5])
         count = count + 1
-        if count == 128:
+        if count == 150:
             break
-        #print (processed_thread)
-        #print (processed_thread[0])
-        print ("The count is: -------------------------------------------------")
-        print (count)
+
     wb.save("/home/ching/WORK/SentimentAnalysis/club.xlsx")
     return threads
 
