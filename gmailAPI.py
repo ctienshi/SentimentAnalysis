@@ -6,7 +6,6 @@ Also, client_secret.json should be saved in the same directory as this file
 
 # Importing required libraries
 from apiclient import discovery
-<<<<<<< HEAD
 from apiclient import errors
 from httplib2 import Http
 from oauth2client import file, client, tools
@@ -25,7 +24,7 @@ from Sentiment import calEmotionalLevel
 SCOPES = 'https://www.googleapis.com/auth/gmail.modify' # we are using modify and not readonly, as we will be marking the messages Read
 store = file.Storage('storage.json')
 creds = store.get()
-=======
+
 from httplib2 import Http
 from oauth2client import file, client, tools
 from bs4 import BeautifulSoup
@@ -38,7 +37,7 @@ SCOPES = 'https://www.googleapis.com/auth/gmail.modify' # we are using modify an
 store = file.Storage('storage.json')
 creds = store.get()
 
->>>>>>> version5
+
 if not creds or creds.invalid:
     flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
     creds = tools.run_flow(flow, store)
@@ -49,7 +48,7 @@ label_id_one = 'INBOX'
 label_id_two = 'UNREAD'
 
 # Getting all the unread messages from Inbox
-<<<<<<< HEAD
+
 # labelIds can be changed accordingly
 
 #unread_msgs = GMAIL.users().messages().list(userId='me',labelIds=[label_id_one, label_id_two]).execute()
@@ -60,13 +59,12 @@ mssg_list = vpos['messages']
 
 print ("Total unread messages in inbox: ", str(len(mssg_list)))
 
-=======
 
 # We get a dictonary. Now reading values for the key 'messages'
 vpos = GMAIL.users().messages().list(userId='me',labelIds='Label_63').execute()
 mssg_list = vpos['messages']
 
->>>>>>> version5
+
 final_list = [ ]
 count = 0
 email = ''
@@ -75,7 +73,7 @@ elevel = 0
 lbl = ""
 
 for mssg in mssg_list:
-<<<<<<< HEAD
+
 	temp_dict = { }
 	m_id = mssg['id'] # get id of individual message
 	message = GMAIL.users().messages().get(userId=user_id, id=m_id).execute() # fetch the message using API
@@ -155,7 +153,6 @@ for mssg in mssg_list:
 
 print ("Total messaged retrived: ", str(len(final_list)))
 
-=======
     temp_dict = { }
     m_id = mssg['id'] # get id of individual message
     message = GMAIL.users().messages().get(userId=user_id, id=m_id).execute() # fetch the message using API
@@ -234,7 +231,7 @@ print ("Total messaged retrived: ", str(len(final_list)))
 print ("Total messaged retrived: ", str(len(final_list)))
 
 #The code to get the relevant label IDs
->>>>>>> version5
+
 '''
 results = GMAIL.users().labels().list(userId='me').execute()
 labels = results.get('labels', [])
