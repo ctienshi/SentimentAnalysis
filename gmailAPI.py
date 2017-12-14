@@ -47,34 +47,13 @@ label_id_two = 'UNREAD'
 #print (vpos)
 
 # We get a dictonary. Now reading values for the key 'messages'
-vpos = GMAIL.users().messages().list(userId='me',labelIds='Label_64').execute()
+vpos = GMAIL.users().messages().list(userId='me',labelIds='Label_63').execute()
 mssg_list = vpos['messages']
 
 #print ("Total unread messages in inbox: ", str(len(mssg_list)))
 #---------------------------------------------------------------------------------------------------------------------
 #r = GMAIL.users().threads().list(userId='me', q='label:Label_74').execute()
 
-
-#Getting the threadID list for a particular label
-threadids = []
-r = ListThreadsWithLabels(GMAIL,'me','Label_74')
-for i in range(len(r)):
-    threadid = find_between(str(r[i]))
-    threadids.append(threadid)
-print (threadids)
-
-
-thread = GMAIL.users().threads().get(userId='me', id=str(threadids[0])).execute()
-messages = thread['messages']
-numOfmessages = len(messages) #number of messages in a thread
-print ("number of messages")
-print (numOfmessages)
-
-
-#Getting the emails in a particular thread
-#mailsInThread = read_mails_in_thread(GMAIL,'15fb6cd363972583')
-#print (mailsInThread)
-tmp = get_mail_threads(GMAIL,[str(threadids[0])])
 
 #---------------------------------------------------------------------------------------------------------------------
 

@@ -4,6 +4,7 @@ import email
 import base64
 from htmlparser import strip_tags
 from Sentiment import calEmotionalLevel
+from openpyxl import load_workbook
 
 def get_mail_subject(mail):
     return  mail['subject']
@@ -146,10 +147,12 @@ def read_mails_in_thread(gmail,thread):
     Returns: list with data in emails
 
     '''
+
     processed_thread = {}
     processed_thread["thread_id"] = thread
     processed_thread["message_count"] = len(thread[smart_str('messages')])
     data = []
+    emotionalList = []
     vpos = 0
     pos = 0
     neu = 0
@@ -157,15 +160,13 @@ def read_mails_in_thread(gmail,thread):
     vneg = 0
     # retrie each mail in raw format for read
     for mail in thread[smart_str('messages')]:
+        emotionalList = []
+
         mail_data = {}
         raw_mail = get_mime_mail(gmail,mail[smart_str('id')])
         subject = get_mail_subject(raw_mail)
         body = get_mail_body(raw_mail)
         processed_body = process_mail_body(body)
-        print ("this is the subject")
-        print (subject)
-        print('\n')
-        print(processed_body)
         emotionalLevel = calEmotionalLevel(processed_body)
         if emotionalLevel == 2:
             vpos = vpos + 1
@@ -177,7 +178,6 @@ def read_mails_in_thread(gmail,thread):
             neg = neg + 1
         elif emotionalLevel == -2:
             vneg = vneg + 1
-
         #word_count = get_mail_body_word_count(processed_body)
         mail_data["id"] = mail
         mail_data["subject"] = subject
@@ -186,13 +186,14 @@ def read_mails_in_thread(gmail,thread):
         data.append(mail_data)
     processed_thread["mail-list"] = data
     print ("THE NUMBERSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
-    print (vpos)
-    print (pos)
-    print (neu)
-    print (neg)
-    print (vneg)
-
-    return processed_thread
+    emotionalList.append(subject)
+    emotionalList.append(vpos)
+    emotionalList.append(pos)
+    emotionalList.append(neu)
+    emotionalList.append(neg)
+    emotionalList.append(vneg)
+    #print (emotionalList)
+    return emotionalList
 
 def get_mail_threads(gmail,threadId_list):
     '''
@@ -203,13 +204,37 @@ def get_mail_threads(gmail,threadId_list):
     Returns: list of mail threads with messages
 
     '''
+    wb=load_workbook("/home/ching/WORK/SentimentAnalysis/club.xlsx")
+    ws = wb.active
+    first_column = ws['B']
+
     threads = []
+    count = 120
     #iterate though each thread
     for thread in threadId_list:
         thread_data = get_thread(gmail,smart_str(thread),'minimal')
         processed_thread = read_mails_in_thread(gmail,thread_data)
-
+        subjectTitle = 'A'
+        vpos = 'B'
+        pos = 'C'
+        neu = 'D'
+        neg = 'E'
+        vneg = 'F'
         threads.append(processed_thread)
+        ws[subjectTitle+str(1+count)] = str(processed_thread[0])
+        ws[vpos+str(1+count)] = str(processed_thread[1])
+        ws[pos+str(1+count)] = str(processed_thread[2])
+        ws[neu+str(1+count)] = str(processed_thread[3])
+        ws[neg+str(1+count)] = str(processed_thread[4])
+        ws[vneg+str(1+count)] = str(processed_thread[5])
+        count = count + 1
+        if count == 128:
+            break
+        #print (processed_thread)
+        #print (processed_thread[0])
+        print ("The count is: -------------------------------------------------")
+        print (count)
+    wb.save("/home/ching/WORK/SentimentAnalysis/club.xlsx")
     return threads
 
 def process_mail_body(content):
