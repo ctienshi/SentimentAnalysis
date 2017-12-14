@@ -115,9 +115,9 @@ def ListThreadsWithLabels(service, user_id, label_ids=[]):
       list contains Thread IDs, you must use get with the appropriate
       ID to get the details for a Thread.
     """
+
     try:
-        response = service.users().threads().list(userId=user_id,
-                                                  labelIds=label_ids).execute()
+        response = service.users().threads().list(userId=user_id,labelIds=label_ids,q='after:2017/12/12 before:2017/12/13').execute()
         threads = []
         if 'threads' in response:
             threads.extend(response['threads'])
@@ -199,11 +199,11 @@ def get_mail_threads(gmail,threadId_list):
     Returns: list of mail threads with messages
 
     '''
-    wb=load_workbook("/home/ching/WORK/SentimentAnalysis/club.xlsx")
+    wb=load_workbook("/home/ching/WORK/SentimentAnalysis/ballerina.xlsx")
     ws = wb.active
 
     threads = []
-    count = 120
+    count = 0
     #iterate though each thread
     for thread in threadId_list:
         thread_data = get_thread(gmail,smart_str(thread),'minimal')
@@ -222,10 +222,13 @@ def get_mail_threads(gmail,threadId_list):
         ws[neg+str(1+count)] = str(processed_thread[4])
         ws[vneg+str(1+count)] = str(processed_thread[5])
         count = count + 1
-        if count == 150:
+        if count == len(threadId_list):
+        #if count == 10:
             break
+        print ("--------------the count is: -------------------------------------------------------------------------------------------------------------------")
+        print (count)
 
-    wb.save("/home/ching/WORK/SentimentAnalysis/club.xlsx")
+    wb.save("/home/ching/WORK/SentimentAnalysis/ballerina.xlsx")
     return threads
 
 def process_mail_body(content):

@@ -18,7 +18,7 @@ user_id =  'me'
 
 #Getting the threadID list for a particular label
 threadids = []
-r = ListThreadsWithLabels(GMAIL,'me','Label_64')
+r = ListThreadsWithLabels(GMAIL,'me','Label_63')
 #print (len(r))
 for i in range(len(r)):
     threadid = find_between(str(r[i]))
