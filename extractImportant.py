@@ -117,7 +117,7 @@ def ListThreadsWithLabels(service, user_id, label_ids=[]):
     """
 
     try:
-        response = service.users().threads().list(userId=user_id,labelIds=label_ids,q='after:2017/12/12 before:2017/12/13').execute()
+        response = service.users().threads().list(userId=user_id,labelIds=label_ids,q='after:2017/12/01 before:2017/12/13').execute()
         threads = []
         if 'threads' in response:
             threads.extend(response['threads'])
@@ -165,7 +165,12 @@ def read_mails_in_thread(gmail,thread):
         subject = get_mail_subject(raw_mail)
         body = get_mail_body(raw_mail)
         processed_body = process_mail_body(body)
+        print ("The length of the body is +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        print (len(processed_body))
+        processed_body = processed_body.split("You received this message because you are subscribed to the Google")[0]
+
         emotionalLevel = calEmotionalLevel(processed_body)
+
         if emotionalLevel == 2:
             vpos = vpos + 1
         elif emotionalLevel == 1:
@@ -181,6 +186,8 @@ def read_mails_in_thread(gmail,thread):
         mail_data["body"] = processed_body
         data.append(mail_data)
     processed_thread["mail-list"] = data
+    print ("The SUBJECT IS-------------------------------------------------------------------------------------------------")
+    print (subject)
     emotionalList.append(subject)
     emotionalList.append(vpos)
     emotionalList.append(pos)
@@ -206,6 +213,8 @@ def get_mail_threads(gmail,threadId_list):
     count = 0
     #iterate though each thread
     for thread in threadId_list:
+        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++THE THREAD NUMBER IS+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        print(count)
         thread_data = get_thread(gmail,smart_str(thread),'minimal')
         processed_thread = read_mails_in_thread(gmail,thread_data)
         subjectTitle = 'A'
@@ -223,7 +232,7 @@ def get_mail_threads(gmail,threadId_list):
         ws[vneg+str(1+count)] = str(processed_thread[5])
         count = count + 1
         if count == len(threadId_list):
-        #if count == 10:
+        #if count == 40:
             break
         print ("--------------the count is: -------------------------------------------------------------------------------------------------------------------")
         print (count)

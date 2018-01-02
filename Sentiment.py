@@ -1,7 +1,9 @@
 from pycorenlp import StanfordCoreNLP
+from textblob import TextBlob
 import math
 import re
 import sys
+import time
 reload(sys)
 sys.setdefaultencoding('utf-8')
 #from test import  authenticate
@@ -41,13 +43,13 @@ def calSentimentLevel(sentimentRate):
     return slevel
 
 
-
+'''
 def stanfordNLP(data):
     sentimentLevel = 0
 
+    start = time.time()
     nlp = StanfordCoreNLP('http://localhost:9000')
-    res = nlp.annotate(data,properties={'annotators': 'sentiment','outputFormat':'json','timeout': 100000})
-    #print (res)
+    res = nlp.annotate(data,properties={'annotators': 'sentiment','outputFormat':'json','timeout': 100000000 })
     for i in res["sentences"]:
         val = int(i["sentimentValue"])
         if i["sentiment"] == "Verypositive":
@@ -66,8 +68,52 @@ def stanfordNLP(data):
             sentimentLevel = sentimentLevel - val - 5
 
     stanfordLevel = calSentimentLevel(sentimentLevel)
+    print("The time taken is ========================================================================================================================================")
+    end = time.time()
+    d = end-start
+    print(d)
     return stanfordLevel
+'''
 
+def textBlb(text):
+    blob = TextBlob(text)
+    sentimentLevel = 0
+    totalPolarity = blob.sentiment.polarity
+    polarityLevel = 0
+    count = 0
+
+    print (totalPolarity)
+    for sentence in blob.sentences:
+        sentencePolarity = sentence.sentiment.polarity
+        if sentencePolarity <= -0.75:
+            print("very negative")
+            sentimentLevel = -2
+            break;
+
+        elif sentencePolarity >= 0.75:
+            print("GREAT")
+            sentimentLevel = 2
+            break;
+
+        elif sentencePolarity > 0.40 and sentencePolarity < 0.75:
+            print("Positive")
+            sentimentLevel = 1
+            break;
+
+        elif sentencePolarity <= -0.40 and sentencePolarity > -0.75:
+            sentimentLevel = -1
+            print("Negative")
+            break;
+
+        elif sentencePolarity > -0.40 and sentencePolarity < 0.50:
+            sentimentLevel = 0
+            print("Neutral")
+
+
+        polarityLevel = polarityLevel + sentencePolarity
+        count = count + 1
+        print(sentencePolarity)
+    return sentimentLevel
 
 #Bag of words method-----------------------------------------------------------------------
 def bagofwords(email):
@@ -100,11 +146,13 @@ def bagofwords(email):
 #------------------------------------------------------------------------------------------
 
 def calEmotionalLevel(email):
+    print ("the email body is--------------------")
+    print (email)
     emotionalLevel = ""
     tmp = 0
     sentiAF = sentimentAfinn(email)
     sentiBOW = bagofwords(email)
-    sentiSNLP = stanfordNLP(email)
+    sentiSNLP = textBlb(email)
 
     Slvl = sentiAF + sentiBOW + sentiSNLP
 
