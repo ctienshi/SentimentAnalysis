@@ -5,6 +5,8 @@ import base64
 from htmlparser import strip_tags
 from Sentiment import calEmotionalLevel
 from openpyxl import load_workbook
+import mysql.connector
+
 
 def get_mail_subject(mail):
     return  mail['subject']
@@ -117,7 +119,7 @@ def ListThreadsWithLabels(service, user_id, label_ids=[]):
     """
 
     try:
-        response = service.users().threads().list(userId=user_id,labelIds=label_ids,q='after:2017/12/01 before:2017/12/13').execute()
+        response = service.users().threads().list(userId=user_id,labelIds=label_ids,q='after:2017/12/30 before:2018/01/01').execute()
         threads = []
         if 'threads' in response:
             threads.extend(response['threads'])
@@ -145,7 +147,8 @@ def read_mails_in_thread(gmail,thread):
     Returns: list with data in emails
 
     '''
-
+    cnx = mysql.connector.connect(user='root',password='houses123',host='127.0.0.1', database='testing')
+    cursor = cnx.cursor()
     processed_thread = {}
     processed_thread["thread_id"] = thread
     processed_thread["message_count"] = len(thread[smart_str('messages')])
@@ -194,19 +197,33 @@ def read_mails_in_thread(gmail,thread):
     emotionalList.append(neu)
     emotionalList.append(neg)
     emotionalList.append(vneg)
+    add_employee = ("INSERT INTO emails "
+                    "(threadid, sub, vpositive, positive, neutral,negative,vnegative) "
+                    "VALUES (%s, %s, %s, %s, %s,%s,%s)")
+    print ("DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATTTTTTTTTTTTTTTTTTTTTTTTTTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa")
+    print(thread[smart_str('id')])
+    print ("testtttttttttttttttttttttttttttttttttttttttt")
+    aaaaaaa = find_between(str(thread))
+    print(aaaaaaa)
+    data_employee = (thread[smart_str('id')], emotionalList[0], emotionalList[1],emotionalList[2],emotionalList[3],emotionalList[4],emotionalList[5])
 
+    cursor.execute(add_employee, data_employee)
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
     return emotionalList
 
 def get_mail_threads(gmail,threadId_list):
     '''
     get the content of mail threads when a thread id is given
     Args:
-        threadId_list: thread id
+        threadId_lisget_mail_threadst: thread id
 
     Returns: list of mail threads with messages
 
     '''
-    wb=load_workbook("/home/ching/WORK/SentimentAnalysis/ballerina.xlsx")
+    wb=load_workbook("/home/ching/WORK/SentimentAnalysis/bizdev.xlsx")
     ws = wb.active
 
     threads = []
@@ -231,15 +248,14 @@ def get_mail_threads(gmail,threadId_list):
         ws[neg+str(1+count)] = str(processed_thread[4])
         ws[vneg+str(1+count)] = str(processed_thread[5])
         count = count + 1
-        if count == len(threadId_list):
-        #if count == 40:
+        #if count == len(threadId_list):
+        if count == 20:
             break
         print ("--------------the count is: -------------------------------------------------------------------------------------------------------------------")
         print (count)
 
-    wb.save("/home/ching/WORK/SentimentAnalysis/ballerina.xlsx")
-    return threads
-
+    wb.save("/home/ching/WORK/SentimentAnalysis/bizdev.xlsx")
+    return processed_thread
 def process_mail_body(content):
     nohtml = strip_tags(content)
     content = nohtml.split("From ")

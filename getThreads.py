@@ -5,9 +5,11 @@ from extractImportant import ListThreadsWithLabels
 from extractImportant import get_mail_threads
 from extractImportant import find_between
 
+
 SCOPES = 'https://www.googleapis.com/auth/gmail.modify' # we are using modify and not readonly, as we will be marking the messages Read
 store = file.Storage('storage.json')
 creds = store.get()
+
 
 if not creds or creds.invalid:
     flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
@@ -18,7 +20,7 @@ user_id =  'me'
 
 #Getting the threadID list for a particular label
 threadids = []
-r = ListThreadsWithLabels(GMAIL,'me','Label_63')
+r = ListThreadsWithLabels(GMAIL,'me','Label_78')
 #print (len(r))
 for i in range(len(r)):
     threadid = find_between(str(r[i]))
@@ -26,4 +28,5 @@ for i in range(len(r)):
 print (threadids)
 print (len(threadids))
 
-get_mail_threads(GMAIL,threadids)
+data = get_mail_threads(GMAIL,threadids)
+
