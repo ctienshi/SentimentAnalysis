@@ -11,8 +11,11 @@ class MLStripper(HTMLParser):
     def get_data(self):
         return ''.join(self.fed)
 
-
 def strip_tags(html):
     s = MLStripper()
-    s.feed(html)
-    return s.get_data()
+
+    try:
+        s.feed(html.decode("utf-8"))
+        return s.get_data()
+    except:
+        return html

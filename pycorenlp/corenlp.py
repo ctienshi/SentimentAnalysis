@@ -9,7 +9,6 @@ class StanfordCoreNLP:
         self.server_url = server_url
 
     def annotate(self, text, properties=None):
-	print(text)
         assert isinstance(text, str)
         if properties is None:
             properties = {}

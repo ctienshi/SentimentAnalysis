@@ -168,8 +168,6 @@ def read_mails_in_thread(gmail,thread):
         subject = get_mail_subject(raw_mail)
         body = get_mail_body(raw_mail)
         processed_body = process_mail_body(body)
-        print ("The length of the body is +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        print (len(processed_body))
         processed_body = processed_body.split("You received this message because you are subscribed to the Google")[0]
 
         emotionalLevel = calEmotionalLevel(processed_body)
@@ -189,8 +187,6 @@ def read_mails_in_thread(gmail,thread):
         mail_data["body"] = processed_body
         data.append(mail_data)
     processed_thread["mail-list"] = data
-    print ("The SUBJECT IS-------------------------------------------------------------------------------------------------")
-    print (subject)
     emotionalList.append(subject)
     emotionalList.append(vpos)
     emotionalList.append(pos)
@@ -200,11 +196,6 @@ def read_mails_in_thread(gmail,thread):
     add_employee = ("INSERT INTO emails "
                     "(threadid, sub, vpositive, positive, neutral,negative,vnegative) "
                     "VALUES (%s, %s, %s, %s, %s,%s,%s)")
-    print ("DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATTTTTTTTTTTTTTTTTTTTTTTTTTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa")
-    print(thread[smart_str('id')])
-    print ("testtttttttttttttttttttttttttttttttttttttttt")
-    aaaaaaa = find_between(str(thread))
-    print(aaaaaaa)
     data_employee = (thread[smart_str('id')], emotionalList[0], emotionalList[1],emotionalList[2],emotionalList[3],emotionalList[4],emotionalList[5])
 
     cursor.execute(add_employee, data_employee)
@@ -230,8 +221,6 @@ def get_mail_threads(gmail,threadId_list):
     count = 0
     #iterate though each thread
     for thread in threadId_list:
-        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++THE THREAD NUMBER IS+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        print(count)
         thread_data = get_thread(gmail,smart_str(thread),'minimal')
         processed_thread = read_mails_in_thread(gmail,thread_data)
         subjectTitle = 'A'
@@ -251,8 +240,6 @@ def get_mail_threads(gmail,threadId_list):
         #if count == len(threadId_list):
         if count == 20:
             break
-        print ("--------------the count is: -------------------------------------------------------------------------------------------------------------------")
-        print (count)
 
     wb.save("/home/ching/WORK/SentimentAnalysis/bizdev.xlsx")
     return processed_thread
