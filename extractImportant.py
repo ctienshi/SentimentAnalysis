@@ -6,7 +6,7 @@ from htmlparser import strip_tags
 from Sentiment import calEmotionalLevel
 from openpyxl import load_workbook
 import mysql.connector
-
+import re
 
 def get_mail_subject(mail):
     return  mail['subject']
@@ -119,7 +119,7 @@ def ListThreadsWithLabels(service, user_id, label_ids=[]):
     """
 
     try:
-        response = service.users().threads().list(userId=user_id,labelIds=label_ids,q='after:2017/12/30 before:2018/01/01').execute()
+        response = service.users().threads().list(userId=user_id,labelIds=label_ids,q='after:2017/12/01 before:2018/01/01').execute()
         threads = []
         if 'threads' in response:
             threads.extend(response['threads'])
@@ -149,11 +149,13 @@ def read_mails_in_thread(gmail,thread):
     '''
     cnx = mysql.connector.connect(user='root',password='houses123',host='127.0.0.1', database='testing')
     cursor = cnx.cursor()
+
     processed_thread = {}
     processed_thread["thread_id"] = thread
     processed_thread["message_count"] = len(thread[smart_str('messages')])
     data = []
     emotionalList = []
+    lastmessage = ""
     vpos = 0
     pos = 0
     neu = 0
@@ -186,6 +188,8 @@ def read_mails_in_thread(gmail,thread):
         mail_data["subject"] = subject
         mail_data["body"] = processed_body
         data.append(mail_data)
+
+        lastmessage = processed_body
     processed_thread["mail-list"] = data
     emotionalList.append(subject)
     emotionalList.append(vpos)
@@ -193,16 +197,24 @@ def read_mails_in_thread(gmail,thread):
     emotionalList.append(neu)
     emotionalList.append(neg)
     emotionalList.append(vneg)
+    emotionalList.append(lastmessage)
+    print("+++++++++++++++++++++++++++++++++++LAST++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    print (lastmessage)
+    print (emotionalList)
+    #print (emotionalList[6])
+    '''
     add_employee = ("INSERT INTO emails "
                     "(threadid, sub, vpositive, positive, neutral,negative,vnegative) "
                     "VALUES (%s, %s, %s, %s, %s,%s,%s)")
     data_employee = (thread[smart_str('id')], emotionalList[0], emotionalList[1],emotionalList[2],emotionalList[3],emotionalList[4],emotionalList[5])
+    
 
     cursor.execute(add_employee, data_employee)
     cnx.commit()
 
     cursor.close()
     cnx.close()
+    '''
     return emotionalList
 
 def get_mail_threads(gmail,threadId_list):
@@ -238,11 +250,12 @@ def get_mail_threads(gmail,threadId_list):
         ws[vneg+str(1+count)] = str(processed_thread[5])
         count = count + 1
         #if count == len(threadId_list):
-        if count == 20:
+        if count == 3:
             break
 
     wb.save("/home/ching/WORK/SentimentAnalysis/bizdev.xlsx")
     return processed_thread
+
 def process_mail_body(content):
     nohtml = strip_tags(content)
     content = nohtml.split("From ")
@@ -250,11 +263,22 @@ def process_mail_body(content):
         content = content[1]
     else:
         content = content[0]
-    data = content.split(">")[0].split("\n\n")
+    print ("==========================================================THE DATA============================================================")
+    #print (content)
+
+    content = ">".join(content.split(">>"))
+    content = re.sub('>.*?\n','',content, flags=re.DOTALL)
+    content = re.sub('Content-Type:.*?\n','',content, flags=re.DOTALL)
+    content = re.sub('Content-Transfer.*?\n','',content, flags=re.DOTALL)
+    content = re.sub('obody.*? ','',content, flags=re.DOTALL)
+
+
+    #data = content.split(">")[0].split("\n\n")
+
     body = ""
-    length = len(data)
+    length = len(content)
     for i in range(1,length):
-        body = body+data[i]
+        body = body+content[i]
     return body
 
 def find_between(s):
