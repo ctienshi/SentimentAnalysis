@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <title>SB Admin - Start Bootstrap Template</title>
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -19,42 +21,45 @@
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
+
+  
+
+
+
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color: #000000" >
+    <!-- <a class="navbar-brand" href="index.html">Email Analysis</a> -->
+
+
     <a class="navbar-brand" href="#"><span><b><img src="wso2.png" width="70" height="35"></b>&nbsp&nbsp Email Analysis</span>
-      <a class="navbar-brand" href="index.html"></a>
-    
+    <a class="navbar-brand" href="index.html"></a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Email Analysis">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Sentiment Analysis">
           <a class="nav-link" href="index.html">
             <i class="fa fa-envelope"></i>
-            <span class="nav-link-text" >Email Analysis</span>
+            <span class="nav-link-text">Email Analysis</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Complexity Level">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Complexity Analysis">
           <a class="nav-link" href="charts.html">
             <i class="fa fa-book"></i>
             <span class="nav-link-text">Complexity Analysis</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Sentiment Analysis">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
           <a class="nav-link" href="tables.php">
             <i class="fa fa-frown-o"></i>
             <span class="nav-link-text">Sentiment Analysis</span>
           </a>
         </li>
+
+
+
         
-      </ul>
-      <ul class="navbar-nav sidenav-toggler">
-        <li class="nav-item">
-          <a class="nav-link text-center" id="sidenavToggler">
-            <i class="fa fa-fw fa-angle-left"></i>
-          </a>
-        </li>
       </ul>
       <ul class="navbar-nav ml-auto">
         
@@ -65,101 +70,24 @@
       </ul>
     </div>
   </nav>
-
-
   <div class="content-wrapper">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
           <a style="color:#000000" href="index.html">Email Analysis</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color:#000000" href="tables.php" > Sentiment Analysis</a>
+       </li>
+
+        <li class="breadcrumb-item active">More Information
 
         </li>
-        <li class="breadcrumb-item active">Sentiment Analysis</li>
       </ol>
-      <!-- Example DataTables Card-->
-      <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-frown-o"></i> Sentiment Levels
-
-
-
-
-          <div class="dropdown" align="right" >
-
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="background-color: black;">Select Group
-            <span class="caret"></span></button>
-
-            <span class="btn btn-info" type="button"  >
-              <i class="fa fa-search"> Search </i>
-            </span>
-
-
-            
-            <ul class="dropdown-menu">
-              <li><a href="#">Architecture</a></li>
-              <li><a href="#">strategy-group</a></li>
-              <li><a href="#">dev</a></li>
-            </ul>
-          </div>
-          </div>
-
-        <div class="card-body">
-
-        
-
-          <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-              <thead>
-                <tr>
-                  <th> Date </th>
-                  <th> Subject </th>
-                  <th> Very Postive </th>
-                  <th> Postive </th>
-                  <th> Neutral </th>
-                  <th> Negative </th>
-                  <th> Very Negative </th>
-                  <th> Overall </th>
-                </tr>
-
-<?php
-    //Create Connection with MySQL Database
-    $con = mysqli_connect('127.0.0.1','root','houses123');
-
-    //Select Database
-    if(!mysqli_select_db($con,'testing'))
-    {
-        echo "Database Not Selected";
-    }
-    //Select Query
-    $sql = "SELECT * FROM emails";
-
-    //Execute the SQL query
-    $records = mysqli_query($con,$sql);
-
-    while($row = mysqli_fetch_array($records))
-
-
-    {
-        echo "<tr>";
-        echo "<td>".$row['threadid']."</td>";
-        echo "<td>" . 
-        '<a href="cards.php?data='.urlencode($row['sub']).'">'.$row['sub'] . '</a>' ."</td>";
-
-        echo "<td>".$row['vpositive']."</td>";
-        echo "<td>".$row['positive']."</td>";
-        echo "<td>".$row['neutral']."</td>";
-        echo "<td>".$row['negative']."</td>";
-        echo "<td>".$row['vnegative']."</td>";
-    }
-    
-?>
-            </table>
-          </div>
-        
-    </div>
-    <!-- /.container-fluid-->
-    <!-- /.content-wrapper-->
+      <!-- Icon Cards-->
+      
+      
     <!-- <footer class="sticky-footer">
       <div class="container">
         <div class="text-center">
@@ -189,20 +117,118 @@
         </div>
       </div>
     </div>
+
+<?php
+    
+      if(isset($_GET["data"]) )
+    {
+        $data = $_GET["data"];
+      echo "<h6>" . "<b>"."Email Subject: "."</b>". $data . "</h6>"; 
+     }  
+?>   
+
+<div class="btn-group btn-group-lg">
+  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalLong" >View Last Message</button>
+  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#testing2" >View Whole Thread</button>
+</div>
+
+
+    <!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-info btn-lg"  data-toggle="modal" data-target="#exampleModalLong">
+  View Last Message only
+</button> -->
+
+<!-- <button type="button" class="btn btn-info btn-lg"  data-toggle="modal" data-target="#testing2">
+  View Thread
+</button> -->
+
+<!-- Modal -->
+
+
+
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <?php
+    
+      if(isset($_GET["data"]))
+    {
+        $data = $_GET["data"];
+    
+
+       echo ($data);
+     }
+        ?>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!--  -->
+
+
+
+<div class="modal fade" id="testing2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="testing2">Modal title</h5>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        XAMPP is meant only for development purposes. It has certain configuration settings that make it easy to develop locally but that are insecure if you want to have your installation accessible to others. If you want have your XAMPP accessible from the internet, make sure you understand the implications and you checked the FAQs to learn how to protect your site. Alternatively you can use WAMP, MAMP or LAMP which are similar packages which are more suitable for production.
+
+        Start the XAMPP Control Panel to check the server status.
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger " data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <!-- Page level plugin JavaScript-->
+    <script src="vendor/chart.js/Chart.min.js"></script>
     <script src="vendor/datatables/jquery.dataTables.js"></script>
     <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin.min.js"></script>
     <!-- Custom scripts for this page-->
     <script src="js/sb-admin-datatables.min.js"></script>
+    <script src="js/sb-admin-charts.min.js"></script>
   </div>
-
 </body>
 
 </html>
