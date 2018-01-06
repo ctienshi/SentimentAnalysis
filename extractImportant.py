@@ -161,6 +161,7 @@ def read_mails_in_thread(gmail,thread):
     neu = 0
     neg = 0
     vneg = 0
+    overall = ""
     # retrie each mail in raw format for read
     for mail in thread[smart_str('messages')]:
         emotionalList = []
@@ -190,21 +191,40 @@ def read_mails_in_thread(gmail,thread):
         data.append(mail_data)
 
         lastmessage = processed_body
+
+    if vneg > 0:
+        overall = "Very Negative"
+
+    elif neg > 0:
+        overall = "Negative"
+
+    elif vpos > 0:
+        overall = "Very Positive"
+
+    elif pos > 0:
+        overall = "Positive"
+
+    else:
+        overall = "Neutral"
     processed_thread["mail-list"] = data
+    emotionalList.append(lastmessage[:24])
     emotionalList.append(subject)
     emotionalList.append(vpos)
     emotionalList.append(pos)
     emotionalList.append(neu)
     emotionalList.append(neg)
     emotionalList.append(vneg)
+    emotionalList.append(overall)
+
     emotionalList.append(lastmessage)
     print("+++++++++++++++++++++++++++++++++++LAST++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-    print (lastmessage)
+    #print (lastmessage[:24])
+
     print (emotionalList)
     #print (emotionalList[6])
     '''
     add_employee = ("INSERT INTO emails "
-                    "(threadid, sub, vpositive, positive, neutral,negative,vnegative) "
+                    "(threadid,date, sub, vpositive, positive, neutral,negative,vnegative,overall,lastmsg) "
                     "VALUES (%s, %s, %s, %s, %s,%s,%s)")
     data_employee = (thread[smart_str('id')], emotionalList[0], emotionalList[1],emotionalList[2],emotionalList[3],emotionalList[4],emotionalList[5])
     
@@ -248,15 +268,17 @@ def get_mail_threads(gmail,threadId_list):
         ws[neu+str(1+count)] = str(processed_thread[3])
         ws[neg+str(1+count)] = str(processed_thread[4])
         ws[vneg+str(1+count)] = str(processed_thread[5])
-        count = count + 1
+        count = count + 10
         #if count == len(threadId_list):
-        if count == 3:
+        if count == 1:
             break
 
     wb.save("/home/ching/WORK/SentimentAnalysis/bizdev.xlsx")
     return processed_thread
 
 def process_mail_body(content):
+    imageID = 0
+    idIndex = ""
     nohtml = strip_tags(content)
     content = nohtml.split("From ")
     if(len(content))>1:
@@ -268,10 +290,20 @@ def process_mail_body(content):
 
     content = ">".join(content.split(">>"))
     content = re.sub('>.*?\n','',content, flags=re.DOTALL)
-    content = re.sub('Content-Type:.*?\n','',content, flags=re.DOTALL)
     content = re.sub('Content-Transfer.*?\n','',content, flags=re.DOTALL)
     content = re.sub('obody.*? ','',content, flags=re.DOTALL)
+    #content = re.sub('<div.*? </div>','',content, flags=re.DOTALL)
+    content = re.sub('>.*?\n','',content, flags=re.DOTALL)
+    #content = content.split("<div")[0].split("\n\n")
 
+    imageID = content.find("boundary=")
+    idIndex = content[imageID + 10:imageID+38]
+    #print ("==========================================================ID============================================================")
+    #print (idIndex)
+    new = content.replace(str(idIndex),'', 2)
+    content = new[:new.find(str(idIndex))]
+    content = re.sub('Content-Type:.*?\n','',content, flags=re.DOTALL)
+    content = content.replace("--",'')
 
     #data = content.split(">")[0].split("\n\n")
 
