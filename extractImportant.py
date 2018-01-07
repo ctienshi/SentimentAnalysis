@@ -11,6 +11,15 @@ import re
 def get_mail_subject(mail):
     return  mail['subject']
 
+def get_mail_sender(mail):
+    return  mail['From']
+
+def get_mail_date(mail):
+    return  mail['date']
+
+def get_mail_receiver(mail):
+    return  mail['To']
+
 def get_mail_body(mail):
     data = ""
     if mail.is_multipart():
@@ -156,6 +165,7 @@ def read_mails_in_thread(gmail,thread):
     data = []
     emotionalList = []
     lastmessage = ""
+    count = 0
     vpos = 0
     pos = 0
     neu = 0
@@ -169,6 +179,13 @@ def read_mails_in_thread(gmail,thread):
         mail_data = {}
         raw_mail = get_mime_mail(gmail,mail[smart_str('id')])
         subject = get_mail_subject(raw_mail)
+        date = get_mail_date(raw_mail)
+        sender = get_mail_sender(raw_mail)
+        if count == 0:
+            receiver = get_mail_receiver(raw_mail)
+            print ("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------------------")
+            print (receiver)
+        count = count + 1
         body = get_mail_body(raw_mail)
         processed_body = process_mail_body(body)
         processed_body = processed_body.split("You received this message because you are subscribed to the Google")[0]
@@ -207,7 +224,7 @@ def read_mails_in_thread(gmail,thread):
     else:
         overall = "Neutral"
     processed_thread["mail-list"] = data
-    emotionalList.append(lastmessage[:24])
+    emotionalList.append(date)
     emotionalList.append(subject)
     emotionalList.append(vpos)
     emotionalList.append(pos)
@@ -215,8 +232,10 @@ def read_mails_in_thread(gmail,thread):
     emotionalList.append(neg)
     emotionalList.append(vneg)
     emotionalList.append(overall)
-
+    emotionalList.append(sender)
     emotionalList.append(lastmessage)
+    emotionalList.append(emotionalLevel)
+    emotionalList.append(receiver)
     print("+++++++++++++++++++++++++++++++++++LAST++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
     #print (lastmessage[:24])
 
@@ -224,7 +243,7 @@ def read_mails_in_thread(gmail,thread):
     #print (emotionalList[6])
     '''
     add_employee = ("INSERT INTO emails "
-                    "(threadid,date, sub, vpositive, positive, neutral,negative,vnegative,overall,lastmsg) "
+                    "(threadid,date, sub, vpositive, positive, neutral,negative,vnegative,overall,sender,lastmsg,emotionalLevel,group) "
                     "VALUES (%s, %s, %s, %s, %s,%s,%s)")
     data_employee = (thread[smart_str('id')], emotionalList[0], emotionalList[1],emotionalList[2],emotionalList[3],emotionalList[4],emotionalList[5])
     
@@ -268,7 +287,7 @@ def get_mail_threads(gmail,threadId_list):
         ws[neu+str(1+count)] = str(processed_thread[3])
         ws[neg+str(1+count)] = str(processed_thread[4])
         ws[vneg+str(1+count)] = str(processed_thread[5])
-        count = count + 10
+        count = count + 1
         #if count == len(threadId_list):
         if count == 1:
             break
@@ -280,14 +299,12 @@ def process_mail_body(content):
     imageID = 0
     idIndex = ""
     nohtml = strip_tags(content)
+
     content = nohtml.split("From ")
     if(len(content))>1:
         content = content[1]
     else:
         content = content[0]
-    print ("==========================================================THE DATA============================================================")
-    #print (content)
-
     content = ">".join(content.split(">>"))
     content = re.sub('>.*?\n','',content, flags=re.DOTALL)
     content = re.sub('Content-Transfer.*?\n','',content, flags=re.DOTALL)
