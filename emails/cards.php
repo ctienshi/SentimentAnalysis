@@ -159,13 +159,10 @@
 
         <?php
     
-      if(isset($_GET["data"]))
-    {
-        $data = $_GET["data"];
-    
-
-       echo ($data);
-     }
+        if(isset($_GET["data2"])){
+          $data2 = $_GET["data2"];
+          echo ($data2);
+        }
         ?>
 
       </div>

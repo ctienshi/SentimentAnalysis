@@ -109,7 +109,7 @@
         
 
           <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered" width="100%" cellspacing="0">
               <thead>
                 <tr>
                   <th> Date </th>
@@ -120,19 +120,21 @@
                   <th> Negative </th>
                   <th> Very Negative </th>
                   <th> Overall </th>
+                  <th> Sender(Last Message) </th>
+                  <th> Groups </th>
                 </tr>
 
-<?php
+    <?php
     //Create Connection with MySQL Database
     $con = mysqli_connect('127.0.0.1','root','houses123');
 
     //Select Database
-    if(!mysqli_select_db($con,'testing'))
+    if(!mysqli_select_db($con,'emailing'))
     {
         echo "Database Not Selected";
     }
     //Select Query
-    $sql = "SELECT * FROM emails";
+    $sql = "SELECT * FROM sentiment";
 
     //Execute the SQL query
     $records = mysqli_query($con,$sql);
@@ -142,18 +144,36 @@
 
     {
         echo "<tr>";
-        echo "<td>".$row['threadid']."</td>";
+        echo "<td>".$row['date']."</td>";
+
+
         echo "<td>" . 
-        '<a href="cards.php?data='.urlencode($row['sub']).'">'.$row['sub'] . '</a>' ."</td>";
+        '<a href="cards.php?data='.urlencode($row['sub']).'&data2='.urlencode($row['lastmsg']).'">'.$row['sub'] . '</a>' ."</td>";
 
         echo "<td>".$row['vpositive']."</td>";
         echo "<td>".$row['positive']."</td>";
         echo "<td>".$row['neutral']."</td>";
-        echo "<td>".$row['negative']."</td>";
-        echo "<td>".$row['vnegative']."</td>";
+
+        if ($row['emotionalLevel'] == "-1"){
+        echo "<td>".'<div class="bg-danger text-white">'.$row['negative'].'</div>'."</td>";
+        }
+        else {
+          echo "<td>".$row['negative']."</td>";
+        }
+
+        if ($row['emotionalLevel'] == "-2"){
+        echo "<td>".'<div class="bg-danger text-white">'.$row['vnegative'].'</div>'."</td>";
+        }
+        else {
+          echo "<td>".$row['vnegative']."</td>";
+        }
+        
+        echo "<td>".$row['overall']."</td>";
+        echo "<td>".$row['sender']."</td>";
+        echo "<td>".$row['groupname']."</td>";
     }
     
-?>
+    ?>
             </table>
           </div>
         
