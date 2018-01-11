@@ -9,6 +9,7 @@ import pandas as pd
 import re
 from util import construct_thread_url
 from custom_classfication_module import CustomClassification
+from DBHandler import get_not_downloaded_thread_ids, update_thread_status
 
 clf = CustomClassification(False)
 
@@ -213,12 +214,15 @@ def read_mails_in_thread(gmail,thread):
         complexity_data = pd.DataFrame([[numofMsgs, subject, processed_body, numofwords]],columns=['NO_OF_EMAIL_IN_THREAD', 'SUBJECT', 'EMAIL_BODY', 'WORD_COUNT']);
         complexity_level = int(clf.predict_instance(complexity_data)+1)
 
+
         ws[subjectCol+str(1+count)] = str(subject)
         ws[linkofMessageCol+str(1+count)] = str(msglink)
         ws[dateCol+str(1+count)] = str(date[4:16])
         ws[senderCol+str(1+count)] = str(sender)
         ws[complexityCol+str(1+count)] = str(complexity_level)
         ws[sentimentCol+str(1+count)] = str(emotionalLevel)
+        # update DB state
+        update_thread_status(thread)
         count = count + 1
 
     wb.save("/home/ching/WORK/SentimentAnalysis/results.xlsx")
