@@ -4,7 +4,7 @@ from oauth2client import file, client, tools
 from extractImportantv1 import ListThreadsMatchingQuery
 from extractImportantv1 import get_mail_threads
 from openpyxl import load_workbook
-
+from DBHandler import put_thread_id,get_not_downloaded_thread_ids
 SCOPES = 'https://www.googleapis.com/auth/gmail.modify' # we are using modify and not readonly, as we will be marking the messages Read
 store = file.Storage('storage.json')
 creds = store.get()
@@ -38,11 +38,23 @@ for i in range(len(ListofThreads)):
     ws[ColumnId+str(1+count)] = threadid
 '''
 
+
+for i in range(len(ListofThreads)):
+    print (count)
+    threadid = find_between(str(ListofThreads[i]))
+    count = count + 1
+    # save to DB. Since it's not downloaded yet set Downloaded=False
+    put_thread_id(threadid, False)
+    # ws[ColumnId+str(1+count)] = threadid
+
 # Extracts the threadids from the excel sheet and loads to a list (1000 threadids)
-for count in range(1000):
-    column = ws[ColumnId+str(1+count)]
-    print(column.value)
-    arrayofThreads.append(str(column.value))
+limit = 1000
+data = get_not_downloaded_thread_ids(limit)
+for id_tuple in data:
+    #column = ws[ColumnId+str(1+count)]
+    threadid = id_tuple['_id']
+    # print(column.value)
+    arrayofThreads.append(str(threadid))
 
 
 # Get the corresponding data for the thread list

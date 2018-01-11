@@ -9,6 +9,7 @@ import pandas as pd
 import re
 from util import construct_thread_url
 from custom_classfication_module import CustomClassification
+from DBHandler import get_not_downloaded_thread_ids, update_thread_status
 
 clf = CustomClassification(False)
 
@@ -194,33 +195,38 @@ def read_mails_in_thread(gmail,thread):
     # retrieve each mail in raw format to read
     for mail in thread[smart_str('messages')]:
         emotionalList = []
+        mail_id = smart_str('id')
+        if mail_id is not None:
+            raw_mail = get_mime_mail(gmail,mail[smart_str('id')])
+            subject = get_mail_subject(raw_mail)
+            date = get_mail_date(raw_mail)
+            sender = get_mail_sender(raw_mail)
+            mid = get_mail_messageID(raw_mail)
+            msglink = construct_thread_url(mid)
 
-        raw_mail = get_mime_mail(gmail,mail[smart_str('id')])
-        subject = get_mail_subject(raw_mail)
-        date = get_mail_date(raw_mail)
-        sender = get_mail_sender(raw_mail)
-        mid = get_mail_messageID(raw_mail)
-        msglink = construct_thread_url(mid)
+            body = get_mail_body(raw_mail)
+            processed_body = process_mail_body(body)
+            processed_body = processed_body.split("You received this message because you are subscribed to the Google")[0]
 
-        body = get_mail_body(raw_mail)
-        processed_body = process_mail_body(body)
-        processed_body = processed_body.split("You received this message because you are subscribed to the Google")[0]
+            numofwords = len(processed_body.split())
 
-        numofwords = len(processed_body.split())
+            emotionalLevel = calEmotionalLevel(processed_body)
 
-        emotionalLevel = calEmotionalLevel(processed_body)
+            complexity_data = pd.DataFrame([[numofMsgs, subject, processed_body, numofwords]],columns=['NO_OF_EMAIL_IN_THREAD', 'SUBJECT', 'EMAIL_BODY', 'WORD_COUNT']);
+            complexity_level = int(clf.predict_instance(complexity_data)+1)
 
-        complexity_data = pd.DataFrame([[numofMsgs, subject, processed_body, numofwords]],columns=['NO_OF_EMAIL_IN_THREAD', 'SUBJECT', 'EMAIL_BODY', 'WORD_COUNT']);
-        complexity_level = int(clf.predict_instance(complexity_data)+1)
 
-        ws[subjectCol+str(1+count)] = str(subject)
-        ws[linkofMessageCol+str(1+count)] = str(msglink)
-        ws[dateCol+str(1+count)] = str(date[4:16])
-        ws[senderCol+str(1+count)] = str(sender)
-        ws[complexityCol+str(1+count)] = str(complexity_level)
-        ws[sentimentCol+str(1+count)] = str(emotionalLevel)
-        count = count + 1
-
+            ws[subjectCol+str(1+count)] = str(subject)
+            ws[linkofMessageCol+str(1+count)] = str(msglink)
+            ws[dateCol+str(1+count)] = str(date[4:16])
+            ws[senderCol+str(1+count)] = str(sender)
+            ws[complexityCol+str(1+count)] = str(complexity_level)
+            ws[sentimentCol+str(1+count)] = str(emotionalLevel)
+            # update DB state
+            update_thread_status(thread)
+            count = count + 1
+        else:
+            print("Msg id is None!. Current Thread id: " + thread['id'])
     wb.save("/home/ching/WORK/SentimentAnalysis/results.xlsx")
 
     return emotionalList
