@@ -1,5 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+    //Create Connection with MySQL Database
+    $con = mysqli_connect('127.0.0.1','root','houses123');
+
+    //Select Database
+    if(!mysqli_select_db($con,'emailing'))
+    {
+        echo "Database Not Selected";
+    }
+    ?>
 
 <head>
   <meta charset="utf-8">
@@ -46,7 +56,10 @@
             <i class="fa fa-frown-o"></i>
             <span class="nav-link-text">Sentiment Analysis</span>
           </a>
+        
         </li>
+
+
         
       </ul>
       <ul class="navbar-nav sidenav-toggler">
@@ -85,23 +98,7 @@
 
 
 
-          <div class="dropdown" align="right" >
-
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="background-color: black;">Select Group
-            <span class="caret"></span></button>
-
-            <span class="btn btn-info" type="button"  >
-              <i class="fa fa-search"> Search </i>
-            </span>
-
-
-            
-            <ul class="dropdown-menu">
-              <li><a href="#">Architecture</a></li>
-              <li><a href="#">strategy-group</a></li>
-              <li><a href="#">dev</a></li>
-            </ul>
-          </div>
+          
           </div>
 
         <div class="card-body">
@@ -109,7 +106,7 @@
         
 
           <div class="table-responsive">
-            <table class="table table-bordered" width="100%" cellspacing="0">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
                   <th> Date </th>
@@ -123,61 +120,75 @@
                   <th> Sender(Last Message) </th>
                   <th> Groups </th>
                 </tr>
-
+                  <tbody>
     <?php
-    //Create Connection with MySQL Database
+    /*//Create Connection with MySQL Database
     $con = mysqli_connect('127.0.0.1','root','houses123');
 
     //Select Database
     if(!mysqli_select_db($con,'emailing'))
     {
         echo "Database Not Selected";
-    }
+    }*/
     //Select Query
-    $sql = "SELECT * FROM sentiment";
+    #$sql = "SELECT * FROM sentiment";
+
+    $query = "SELECT DISTINCT overall FROM sentiment";
 
     //Execute the SQL query
-    $records = mysqli_query($con,$sql);
-
-    while($row = mysqli_fetch_array($records))
-
-
-    {
-        echo "<tr>";
-        echo "<td>".$row['date']."</td>";
-
-
-        echo "<td>" . 
-        '<a href="cards.php?data='.urlencode($row['sub']).'&data2='.urlencode($row['lastmsg']).'">'.$row['sub'] . '</a>' ."</td>";
-
-        echo "<td>".$row['vpositive']."</td>";
-        echo "<td>".$row['positive']."</td>";
-        echo "<td>".$row['neutral']."</td>";
-
-        if ($row['emotionalLevel'] == "-1"){
-        echo "<td>".'<div class="bg-danger text-white">'.$row['negative'].'</div>'."</td>";
-        }
-        else {
-          echo "<td>".$row['negative']."</td>";
-        }
-
-        if ($row['emotionalLevel'] == "-2"){
-        echo "<td>".'<div class="bg-danger text-white">'.$row['vnegative'].'</div>'."</td>";
-        }
-        else {
-          echo "<td>".$row['vnegative']."</td>";
-        }
-        
-        echo "<td>".$row['overall']."</td>";
-        echo "<td>".$row['sender']."</td>";
-        echo "<td>".$row['groupname']."</td>";
-    }
     
+    $grpnames = mysqli_query($con,$query);
+
+          $raw_results="SELECT * FROM sentiment";
+            
+            
+            $run=mysqli_query($con,$raw_results);
+
+            while($row = mysqli_fetch_array($run)){
+
+              echo "<tr>";
+              echo "<td>".$row['date']."</td>";
+
+
+              /*echo "<td>" . 
+              '<a href="cards.php?data='.urlencode($row['sub']).'&data2='.urlencode($row['lastmsg']).'">'.$row['sub'] . '</a>' ."</td>";*/
+
+              echo "<td>" .'<a target="_blank" href='.$row['lastmsg'].'>'.$row['sub'] .'</a>'."</td>";
+
+
+              echo "<td>".$row['vpositive']."</td>";
+              echo "<td>".$row['positive']."</td>";
+              echo "<td>".$row['neutral']."</td>";
+
+              if ($row['emotionalLevel'] == "-1"){
+              echo "<td>".'<div class="bg-danger text-white">'.$row['negative'].'</div>'."</td>";
+              }
+              else {
+                echo "<td>".$row['negative']."</td>";
+              }
+
+              if ($row['emotionalLevel'] == "-2"){
+              echo "<td>".'<div class="bg-danger text-white">'.$row['vnegative'].'</div>'."</td>";
+              }
+              else {
+                echo "<td>".$row['vnegative']."</td>";
+              }
+              
+              echo "<td>".$row['overall']."</td>";
+              echo "<td>".$row['sender']."</td>";
+              echo "<td>".$row['groupname']."</td>";
+        
+          }
+        
+    
+
     ?>
+  </tbody>
             </table>
           </div>
         
     </div>
+
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
     <!-- <footer class="sticky-footer">
