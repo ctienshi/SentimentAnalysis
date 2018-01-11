@@ -49,10 +49,10 @@ for i in range(len(ListofThreads)):
 
 # Extracts the threadids from the excel sheet and loads to a list (1000 threadids)
 limit = 1000
-for count in range(limit):
+data = get_not_downloaded_thread_ids(limit)
+for id_tuple in data:
     #column = ws[ColumnId+str(1+count)]
-    data = get_not_downloaded_thread_ids(limit)
-    threadid = data['_id']
+    threadid = id_tuple['_id']
     # print(column.value)
     arrayofThreads.append(str(threadid))
 
